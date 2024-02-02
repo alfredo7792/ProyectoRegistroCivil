@@ -53,7 +53,7 @@ INSERT INTO tipoFicha(nombre)
 VALUES ("Nacimiento"),("Matrimonio"),("Defunción");
 
 INSERT INTO roles(nombreRol) 
-VALUES ("MesaPartes"),("Registrador"),("Administrador"),("Administrador de Sistemas"),("Invitado");
+VALUES ("MesaPartes"),("Registrador"),("Administrador"),("Administrador de Sistemas");
 
 
 -- TABLAS DEBILES
@@ -182,7 +182,8 @@ CREATE TABLE SOLICITUD_DNI(
   fechaEnvioReg       datetime,
   fechaRespuestaReg   datetime,
   solEstado           TINYINT,
-  solFecha            datetime
+  solFecha            datetime,
+  descripcion         text
 );
 
 alter table SOLICITUD_DNI

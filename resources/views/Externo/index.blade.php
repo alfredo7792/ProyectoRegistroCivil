@@ -58,9 +58,7 @@
                         <a class="dropdown-item" href="{{ route('ConsultaMatrimonio') }}" style="text-decoration: none;">Acta Matrimonio</a>
                         <br>
                         <a  class="dropdown-item" href="{{route('ConsultaHuella')}}"  style="text-decoration: none;">Mejores huellas</a>
-                        <br>
-                        <a class="dropdown-item" href="{{route('ConsultaConsulado')}}"  style="text-decoration: none;">Tramites de consulados</a>
-                        <br>
+                        
                     </ul>
                 </li>
                 

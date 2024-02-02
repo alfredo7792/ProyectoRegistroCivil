@@ -257,6 +257,13 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="{{route('ConsultaConsulado')}}">
+                                    <i class="fas fa-user-edit"></i>
+                                    <p>Tramites de consulados</p>
+                                </a>
+                            </li>
+
                             @if (Auth::user()->idRol == 2)
                                 <li class="nav-item">
                                     <a data-toggle="collapse" href="#solicitudDNI">
