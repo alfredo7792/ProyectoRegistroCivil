@@ -50,7 +50,7 @@ class HuellaController extends Controller
                 on p.dni=hp.idPersona
                 inner join huella as h
                 on h.idHuella=hp.idHuella
-                where p.dni=11111111
+                where p.dni='$request->dni'
                 and h.idMano=1 and  hp.calidadHuella= (select max(hp2.calidadHuella) from huella_persona hp2 
                 inner join huella as h2
                 on
@@ -71,7 +71,7 @@ class HuellaController extends Controller
                 on p.dni=hp.idPersona
                 inner join huella as h
                 on h.idHuella=hp.idHuella
-                where p.dni=11111111
+                where p.dni='$request->dni'
                 and h.idMano=2 and  hp.calidadHuella= (select max(hp2.calidadHuella) from huella_persona hp2 
                 inner join huella as h2
                 on

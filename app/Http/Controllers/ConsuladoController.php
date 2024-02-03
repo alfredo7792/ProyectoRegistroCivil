@@ -16,7 +16,7 @@ class ConsuladoController extends Controller
     {
         $busqueda=$request->get('buscarpor');
         $tramites=SolicitudDNI::where('DNI_Titular','=',$busqueda)
-        ->where('solEstado','like','Rechazado')
+        ->where('solEstado','like','%Rechazado%')
         ->paginate($this::PAGINATION);;
 
 
@@ -25,6 +25,9 @@ class ConsuladoController extends Controller
         return view('SubSistemaConsultas.ConsultaConsulado.consulado',compact('tramites','busqueda'));
     }
 
+    // public function cookie(Request $request){
+    //     return Cookie::forever("mysite_search", json_encode(Session::get("search")));;
+    // }
   
 
 }

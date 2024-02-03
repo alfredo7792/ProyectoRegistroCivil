@@ -91,6 +91,7 @@ require __DIR__.'/auth.php';
 //CONSULTAACTAS
     //ACTADEFUNCION
     Route::get('consulta_defuncion',[BuscarActaDefuncion::class,'index'])->name('ConsultaDefuncion');
+   // Route::get('cookie_dar',[ConsuladoController::class,'cookie'])->name('cookie');
     Route::post('validar_defuncion',[BuscarActaDefuncion::class,'search'])->name('SearchDefuncion');
     //ACTANACIMIENTO
     Route::get('consulta_nacimiento',[BuscarActaNacimiento::class,'index'])->name('ConsultaNacimiento');
@@ -104,6 +105,10 @@ require __DIR__.'/auth.php';
     //CONSULADO
     Route::get('consulta_consulado', [ConsuladoController::class,'index'])->name('ConsultaConsulado');
     Route::post('validar_consulado',[ConsuladoController::class,'search'])->name('SearchConsulado');
+
+    //DNI    
+    Route::get();  //Visualizar consulta de DNI
+    Route::post();  //Visualizar Estado de tramite del DNI
     
     //Salir de Acta
     Route::get('regresar',[BuscarActaDefuncion::class,'regresar'])->name('regresar');
