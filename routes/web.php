@@ -107,8 +107,8 @@ require __DIR__.'/auth.php';
     Route::post('validar_consulado',[ConsuladoController::class,'search'])->name('SearchConsulado');
 
     //DNI    
-    Route::get();  //Visualizar consulta de DNI
-    Route::post();  //Visualizar Estado de tramite del DNI
+  //  Route::get();  //Visualizar consulta de DNI
+  //  Route::post();  //Visualizar Estado de tramite del DNI
     
     //Salir de Acta
     Route::get('regresar',[BuscarActaDefuncion::class,'regresar'])->name('regresar');
