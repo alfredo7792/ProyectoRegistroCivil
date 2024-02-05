@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> @yield('titulo')</title>
     @yield('script')
+    <script src="https://kit.fontawesome.com/2fc4256538.js" crossorigin="anonymous"></script>
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet"
          crossorigin="anonymous">
     <script src="{{asset('/js/bootstrap.bundle.min.js')}}"
@@ -43,7 +44,7 @@
         </div>
     </nav>
 
-    <div class="container border mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
+    <div class="container border-light mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
         @yield('cuerpo')
 
 

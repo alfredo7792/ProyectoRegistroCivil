@@ -28,6 +28,7 @@ use App\Http\Controllers\CargoController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\CeseController;
 use App\Http\Controllers\ConsuladoController;
+use App\Http\Controllers\ConsultaDNI;
 use App\Http\Controllers\HoraExtraController;
 
 use App\Http\Controllers\PagoController;
@@ -107,8 +108,8 @@ require __DIR__.'/auth.php';
     Route::post('validar_consulado',[ConsuladoController::class,'search'])->name('SearchConsulado');
 
     //DNI    
-  //  Route::get();  //Visualizar consulta de DNI
-  //  Route::post();  //Visualizar Estado de tramite del DNI
+    Route::get('consulta_dni',[ConsultaDNI::class,'index'])->name('ConsultaDNI');  //Visualizar consulta de DNI
+    Route::post('grafico_estado',[ConsultaDNI::class,'estadoDNI'])->name('GraficoDNI');  //Visualizar Estado de tramite del DNI
     
     //Salir de Acta
     Route::get('regresar',[BuscarActaDefuncion::class,'regresar'])->name('regresar');
