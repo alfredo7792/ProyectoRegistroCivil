@@ -2,14 +2,15 @@
 @section('titulo', 'Acta Defuncion')
 @section('subtitulo', 'Consulta Acta Defuncion')
 @section('cuerpo')
+<div class="container border border-2 rounded-3 mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
     <form action="{{ route('SearchDefuncion') }}" method="POST" class="px-5 py-2">
         @csrf
         <div>
             <img src="{{ asset('images/defuncion.png') }}" alt="defuncion" width="100px" class="img-fluid d-block mx-auto">
         </div>
-
-
-
+    
+    
+    
         <label class="form-label" for="">Año Defuncion</label>
         <input type="number" class="form-control  @error('ano') is-invalid @enderror" name="ano"
             placeholder="Año(4 digitos)" value="{{ old('ano') }}">
@@ -58,7 +59,24 @@
                 <button type="submit" class="btn btn-success px-3">Consultar</button>
             </div>
         </div>
-
-
+    
+    
     </form>
+
+
+    @if (session('success'))
+        <div class="alert alert-success text-center" role="alert">
+            {{ 'success' }}
+        </div>
+    @else
+        @if (session('alert'))
+            <div class="alert alert-danger text-center" role="alert">
+                {{ session('alert') }}
+            </div>
+        @endif
+
+
+    @endif
+
+</div>
 @endsection

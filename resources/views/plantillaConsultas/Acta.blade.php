@@ -44,26 +44,13 @@
         </div>
     </nav>
 
-    <div class="container border border-2 rounded-3 mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
+   
         @yield('cuerpo')
 
 
-        @if (session('success'))
-            <div class="alert alert-success text-center" role="alert">
-                {{ 'success' }}
-            </div>
-        @else
-            @if (session('alert'))
-                <div class="alert alert-danger text-center" role="alert">
-                    {{ session('alert') }}
-                </div>
-            @endif
+     
 
-
-        @endif
-
-    </div>
-    @yield('cuerpo2')
+    
 
 
     <footer class="text-white text-center" style="background-color: #7E0047; position: fixed; bottom: 0; width: 100%; ">

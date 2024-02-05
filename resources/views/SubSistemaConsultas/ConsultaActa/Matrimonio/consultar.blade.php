@@ -2,6 +2,10 @@
 @section('titulo', 'Acta Matrimonio')
 @section('subtitulo', 'Consulta Acta Matrimonio')
 @section('cuerpo')
+<div class="container border border-2 rounded-3 mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
+    
+
+
     <form action="{{ route('SearchMatrimonio') }}" method="post" class="px-5 py-2">
         @csrf
         <div>
@@ -40,7 +44,7 @@
                         {{$message}}
                     </div>
                 @enderror
-
+    
             </div>
         </div>
         <div class="row">
@@ -83,7 +87,23 @@
                 <button type="submit" class="btn btn-success px-3">Consultar</button>
             </div>
         </div>
-
-
+    
+    
     </form>
+
+    @if (session('success'))
+        <div class="alert alert-success text-center" role="alert">
+            {{ 'success' }}
+        </div>
+    @else
+        @if (session('alert'))
+            <div class="alert alert-danger text-center" role="alert">
+                {{ session('alert') }}
+            </div>
+        @endif
+
+
+    @endif
+
+</div>
 @endsection
