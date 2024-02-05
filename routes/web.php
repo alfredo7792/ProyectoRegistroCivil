@@ -109,7 +109,7 @@ require __DIR__.'/auth.php';
 
     //DNI    
     Route::get('consulta_dni',[ConsultaDNI::class,'index'])->name('ConsultaDNI');  //Visualizar consulta de DNI
-    Route::post('grafico_estado',[ConsultaDNI::class,'estadoDNI'])->name('GraficoDNI');  //Visualizar Estado de tramite del DNI
+    Route::get('grafico_estado',[ConsultaDNI::class,'estadoDNI'])->name('GraficoDNI');  //Visualizar Estado de tramite del DNI
     
     //Salir de Acta
     Route::get('regresar',[BuscarActaDefuncion::class,'regresar'])->name('regresar');

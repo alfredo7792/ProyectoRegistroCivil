@@ -44,7 +44,7 @@
         </div>
     </nav>
 
-    <div class="container border-light mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
+    <div class="container border border-2 rounded-3 mx-auto my-4" style="max-width: 700px; width: 100%; min-height: 400px;">
         @yield('cuerpo')
 
 
@@ -63,6 +63,7 @@
         @endif
 
     </div>
+    @yield('cuerpo2')
 
 
     <footer class="text-white text-center" style="background-color: #7E0047; position: fixed; bottom: 0; width: 100%; ">

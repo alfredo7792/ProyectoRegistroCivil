@@ -12,6 +12,6 @@ class ConsultaDNI extends Controller
    }
 
    public function estadoDNI(){
-    return view('SubSistemaConsultas.ConsultaDNI.index');
+    return view('SubSistemaConsultas.ConsultaDNI.grafico');
    }
 }
