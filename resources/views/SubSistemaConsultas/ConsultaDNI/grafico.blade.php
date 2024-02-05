@@ -5,6 +5,7 @@
 <div class="row">
 Nombres completos de la persona
 </div>
+<hr>
 
 <div class="row">
   <div class="col">Numero de DNI</div>
@@ -12,18 +13,27 @@ Nombres completos de la persona
   <div class="col">Fecha de tramite</div>
   <div class="col">fecha probable de entrega</div>
 </div>
-<div class="row">
-  <div class="col">Local de tramite</div>
-  <div class="col">Local de entrega</div>
-  <div class="col">Local y direccion de entrega</div>
-  <div class="col">fecha probable de entrega</div>
-</div>
+
 <div class="row">
   <div class="col">
-    aqui va el grafico
+    <div class="row">
+      <div class="col">
+        <h5>Leyenda del Grafico</h5>
+        <p>Inicio</p>
+        <p>En Proceso</p>
+        <p>En Agencia</p>
+        <p>Entregado</p>
+        <p>Rechazado</p>
+      </div>
+      <div class="col">grafico</div>
+    </div>
   </div>
   <div class="vr"></div>
-  <div class="col">aqui va el porcentaje de progreso Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum eum maiores ex obcaecati a maxime est enim soluta deserunt! Labore quis nemo nostrum, aliquid qui saepe aliquam suscipit consectetur illo.lor</div>
+  <div class="col">
+    <h5>Estado de Tramite</h5>
+    <h1>100%</h1>
+    <h3>Aca va el estado actual del tramite</h3>
+  </div>
 </div>
 
 
