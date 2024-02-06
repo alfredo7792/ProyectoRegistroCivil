@@ -4,7 +4,9 @@
 @section('cuerpo')
 <div class="container my-2 p-4 border w-75">
   <div class="row">
-   <h2 style="color:#004370; font-size:23px"> Nombres</h2>
+   <h2 style="color:#004370; font-size:30px"> @foreach ($solicitud as $s)
+    {{$s->nombre_solicitante}}
+    @endforeach </h2>
   </div>
     <hr style="color: #004370">
     

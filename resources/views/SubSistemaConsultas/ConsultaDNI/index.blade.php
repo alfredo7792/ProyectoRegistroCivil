@@ -15,17 +15,35 @@
     
    </div>
 
+   @if (session('success'))
+   <div class="alert alert-success text-center" role="alert">
+       {{ 'success' }}
+   </div>
+@else
+   @if (session('alert'))
+       <div class="alert alert-danger text-center" role="alert">
+           {{ session('alert') }}
+       </div>
+   @endif
 
+
+@endif
 
    
 
   <form class="row g-3 m-2 align" method="POST" action="{{route('GraficoDNI')}}">
     @csrf
+   
     <div class="col-auto">
       <label  class="form-label">Ingrese numero DNI</label>
     </div>
     <div class="col-auto">
-      <input type="text" class="form-control" name="dni" placeholder="DNI">
+      <input type="text" class="form-control  @error('dni') is-invalid @enderror" name="dni" placeholder="DNI">
+      @error('dni')
+      <div class="invalid-feedback">
+          {{$message}}
+      </div>
+  @enderror
     </div>
     <div class="col-auto">
       <label  class="form-label">Tipo de tramite</label>
@@ -34,13 +52,20 @@
    
     <div class="col-auto">
      
-      <select class="form-select" name="tipo_dni">
+      <select class="form-select @error('tipo_dni') is-invalid @enderror" name="tipo_dni">
 
         <option selected value="1">Primera Vez</option>
         <option value="2">Duplicado</option>
         <option value="3">Renovacion</option>
       </select>
+      @error('tipo_dni')
+      <div class="invalid-feedback">
+          {{$message}}
+      </div>
+  @enderror
     </div>
+
+   
     <div class="col-auto">
       
       <button type="submit" class="btn btn-success mb-3"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
