@@ -200,7 +200,7 @@ class RegistroDuplicadoController extends Controller
         $data = compact('registro', 'fecha', 'linea_detalle');
         $pdf = Pdf::loadView('RegistroDNI.regDuplicado.dniPdf', $data);
 
-        return view('SolicitudDNI/dniPdf',compact('solicitud'));
+        return view('RegistroDNI/dniPdf',compact('solicitud'));
         //return $pdf->stream('dni.pdf');
     }
 

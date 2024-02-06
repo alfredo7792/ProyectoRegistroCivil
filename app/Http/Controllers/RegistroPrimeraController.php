@@ -89,11 +89,12 @@ class RegistroPrimeraController extends Controller
                 $urlfirma = Storage::url('public/primeraVez/FirmasDNI/' . $nombreArchivo);  //obtener url de foto
                 $registro->file_firma = $urlfirma;
             }
+
             $registro->idSolicitudDNI = $solicitud->idSolicitud;
             $registro->regFecha =  new DateTime();
             $registro->dniFechaEmision = (clone $registro->regFecha)->modify('+15 days');
             $registro->dniFechaCaducidad = (clone $registro->dniFechaEmision)->modify('+7 years');
-            $registro->regEstado = "Aceptado";       //1= registrado
+            $registro->regEstado = "Aceptado";     
             if ($registro->save()) {
                 $solicitud->solEstado = "Aceptado";
                 $solicitud->save();
