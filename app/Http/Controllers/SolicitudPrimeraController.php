@@ -25,7 +25,7 @@ class SolicitudPrimeraController extends Controller
     {
         $buscarpor = $request->get('buscarpor');
         $solicitudes = SolicitudDNI::select('*')
-            ->where('nombre_solicitante', 'like', '%' . $buscarpor . '%')
+            ->where('numero_solicitante', 'like', '%' . $buscarpor . '%')
             ->paginate($this::PAGINATION);
 
         return view('SolicitudDNI.solPrimera.index', compact('solicitudes', 'buscarpor'));

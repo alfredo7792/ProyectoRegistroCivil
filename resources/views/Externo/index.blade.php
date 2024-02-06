@@ -57,16 +57,6 @@
                         <a class="dropdown-item" href="{{ route('sol-renovado.create') }}"
                             style="text-decoration: none;">Solicitar Dni por Renovacion</a>
                         <br>
-
-                        <a class="dropdown-item" href="{{ route('ConsultaNacimiento') }}"
-                            style="text-decoration: none">Acta Nacimiento</a>
-                        <br>
-                        <a class="dropdown-item" href="{{ route('ConsultaDefuncion') }}"
-                            style="text-decoration: none;">Acta Defuncion</a>
-                        <br>
-                        <a class="dropdown-item" href="{{ route('ConsultaMatrimonio') }}"
-                            style="text-decoration: none;">Acta Matrimonio</a>
-                        <br>
                     </ul>
                 </li>
                 <li class="nav__items dropdown">

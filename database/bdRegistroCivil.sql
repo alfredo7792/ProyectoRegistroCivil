@@ -143,7 +143,6 @@ values
 ('22222229',"Ramirez","Garcia","Juanita Rosa","F","Soltera","Lima","Lima","Santa Anita",1,"Av. Los Heroes 963",'2005-05-05'),
 ('22222210',"Torres","Morales","Juanita Carmen","F","Soltera","Lima","Lima","Chorrillos",1,"Calle Los Pinos 741",'2006-06-06');
 
-
 -- Nuevas tablas
 create table TIPO_DNI(
   idTipoDni   int AUTO_INCREMENT PRIMARY KEY,
@@ -182,7 +181,7 @@ alter table SOLICITUD_DNI
   ADD FOREIGN KEY (DNI_Titular) REFERENCES Persona(DNI);
 
 ALTER TABLE SOLICITUD_DNI
-  MODIFY COLUMN solEstado ENUM('Pendiente', 'En Proceso', 'Aceptado', 'Rechazado', 'Entregado') NOT NULL DEFAULT 'Pendiente';
+  MODIFY COLUMN solEstado ENUM('Recibido', 'En Revision', 'Aceptado','Rechazado', 'En Agencia','Entregado') NOT NULL DEFAULT 'Recibido';
 
 
 CREATE TABLE Registro_DNI(
@@ -196,11 +195,18 @@ CREATE TABLE Registro_DNI(
   dniFechaEmision       datetime,
   dniFechaCaducidad     datetime,
   regFecha              datetime,
-  regEstado             TINYINT(1)
+  regEstado             TINYINT,
+  dniEstado             TINYINT
 );
+
 
 alter table Registro_DNI
   ADD FOREIGN KEY (DNI) REFERENCES Persona(DNI),
   ADD FOREIGN KEY(idSolicitudDNI) REFERENCES SOLICITUD_DNI(idSolicitud),
   ADD FOREIGN KEY (idTipoDni) REFERENCES TIPO_DNI(idTipoDni);
 
+
+ALTER TABLE Registro_DNI
+  MODIFY COLUMN regEstado ENUM('Recibido', 'Aceptado', 'Rechazado') NOT NULL DEFAULT 'Recibido',
+  MODIFY COLUMN dniEstado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo';
+  

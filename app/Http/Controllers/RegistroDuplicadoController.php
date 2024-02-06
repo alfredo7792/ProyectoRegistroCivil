@@ -22,7 +22,7 @@ class RegistroDuplicadoController extends Controller
 
     public function index(Request $request)
     {
-         $buscarpor = $request->get('buscarpor');
+        $buscarpor = $request->get('buscarpor');
         $registros = RegistroDNI::select('*')
             ->join('persona as p', 'p.DNI', '=', 'registro_dni.DNI')
             ->join('solicitud_dni as sd', 'sd.idSolicitud', '=', 'registro_dni.idSolicitudDNI')
@@ -33,7 +33,7 @@ class RegistroDuplicadoController extends Controller
 
         $solicitudes = SolicitudDNI::select('*')
             ->join('tipo_solicitud_dni as ts', 'ts.idTipoSolicitud', '=', 'solicitud_dni.idTipoSolicitud')
-            ->where('solicitud_dni.solEstado', 'Pendiente')
+            ->where('solicitud_dni.solEstado', 'Recibido')
             ->where('ts.idTipoSolicitud', 2)->get(); // 2= duplicado
         return view('RegistroDNI.regDuplicado.index', compact('registros', 'solicitudes', 'buscarpor'));
     }
@@ -44,53 +44,69 @@ class RegistroDuplicadoController extends Controller
         try {
             $solicitud = SolicitudDNI::find($idSolicitud);
             $persona = Persona::find($solicitud->DNI_Titular);
-            if ($persona) {
-                $solicitud->solEstado = 'En Proceso';
-                $solicitud->save();
-                $registro = new RegistroDNI();
-                $registro->idTipoDni = 2;   // 2=duplicado
-                $registro->regEstado = 0; // 0 = No registrado
-                $registro->idSolicitudDNI = $solicitud->idSolicitud;
-                $registro->DNI = $solicitud->DNI_Titular;
-                $registro->save();
-                DB::commit();
-                return view('RegistroDNI.regDuplicado.create', compact('persona', 'solicitud', 'registro'));
-            } else {
-                DB::rollBack();
-                return redirect()->route('reg-duplicado.index')->with('notifica', 'El ciudadano no existe en la base de datos');
+            $solicitud->solEstado = 'En Revision';
+            $solicitud->save();
+            $registro = new RegistroDNI();
+            $registro->idTipoDni = 2;   // 2=duplicado
+            $registro->regEstado = 'Recibido';
+            $registro->idSolicitudDNI = $solicitud->idSolicitud;
+            $registro->DNI = $solicitud->DNI_Titular;
+            $registro->save();
+
+            $registroExistente = RegistroDNI::select("*")
+                ->where('DNI', $solicitud->DNI_Titular)
+                ->where('regEstado', 'Aprobada')
+                ->where('dniEstado', 'Activa')
+                ->get();
+            if ($registroExistente->count() == 0) {
+                $msg = "El ciudadano nunca se registro para DNI Azul";
             }
+            DB::commit();
+            return view('RegistroDNI.regDuplicado.create', compact('persona', 'solicitud', 'registro'))->with('notifica', $msg);
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception("Horror: " . $e->getMessage());
         }
     }
 
-
-
-
-    public function storeValido(Request $request, $id)
+    public function storeValido(Request $request, $idRegistro)
     {
         DB::beginTransaction();
         try {
-            $registro = RegistroDNI::find($id);
+            $registro = RegistroDNI::find($idRegistro);
             $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
-            $persona= Persona::find($registro->DNI);
-            $registro->DNI = $request->DNI;
-            $registro->direccion = $request->direccion;
-            $registro->idSolicitudDNI = $solicitud->idSolicitud;
-            $registro->regFecha =  new DateTime();
-            $registro->dniFechaEmision = (clone $registro->regFecha)->modify('+15 days');
-            $registro->dniFechaCaducidad = (clone $registro->dniFechaEmision)->modify('+7 years');
-            $registro->regEstado = 1;       //1= registrado
-            if ($registro->save()) {
-                $solicitud->solEstado = "Aceptado";
-                $solicitud->save();
-                DB::commit();
-                return redirect()->route('reg-duplicado.index')->with('notifica', 'La solicitud de DNI AZUL fue exitosa');
+            $persona = Persona::find($registro->DNI);
+
+            $registroExistente = RegistroDNI::select("*")
+                ->where('DNI', $solicitud->DNI_Titular)
+                ->where('regEstado', 'Aprobada')
+                ->where('dniEstado', 'Activa')
+                ->get();
+
+            if ($registroExistente->count() == 1) {
+                $registro->idSolicitudDNI = $solicitud->idSolicitud;
+                $registro->DNI = $solicitud->DNI_Titular;
+                $registro->file_foto = $registroExistente->file_foto;
+                $registro->file_firma = $registroExistente->file_firma;
+                $registro->direccion = $request->direccion;
+                $registro->regFecha = now();
+                $registro->dniFechaEmision = now()->addDays(5);
+                $registro->dniFechaCaducidad = now()->addYear(5);
+                $registro->regEstado = "Aprobada";
+                $registro->dniEstado = "Activa";
+                $registro->idTipoDni = 2;   // 2=duplicado
+                if ($registro->save()) {
+                    $solicitud->solEstado = 'Aprobada';
+                    $solicitud->save();
+                    $registroExistente->dniEstado = 'Inactiva';
+                    $registroExistente->save();
+                    DB::commit();
+                    return redirect()->route('reg-duplicado.index')->with('notifica', 'La solicitud de DNI AZUL fue exitosa');
+                }
             } else {
-                DB::rollBack(); 
-                $result='No se pudo guardar el registro';
-                return view('RegistroDNI.regDuplicado.create', compact('persona', 'solicitud', 'registro'))->with('notifica',$result);
+                DB::rollBack();
+                $result = 'No se pudo guardar el registro';
+                return view('RegistroDNI.regDuplicado.create', compact('persona', 'solicitud', 'registro'))->with('notifica', $result);
             }
         } catch (Exception $e) {
             DB::rollBack();
@@ -103,13 +119,22 @@ class RegistroDuplicadoController extends Controller
         $registro = RegistroDNI::find($id);
         $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
         $persona = Persona::find($registro->DNI);
-        return view('RegistroDNI.regDuplicado.edit', compact('registro', 'persona', 'solicitud'));
+        $registroExistente = RegistroDNI::select("*")
+            ->where('DNI', $solicitud->DNI_Titular)
+            ->where('regEstado', 'Aprobada')
+            ->where('dniEstado', 'Activo')
+            ->get();
+        $msg="";
+        if ($registroExistente->count()> 0) {
+            $msg = "El ciudadano nunca se registro para DNI Azul";
+        }
+        return view('RegistroDNI.regDuplicado.edit', compact('registro', 'persona', 'solicitud'))->with('notifica', $msg);
     }
 
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-        try{
+        try {
             $registro = RegistroDNI::find($id);
             $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
             $registro->DNI = $request->DNI;
@@ -118,62 +143,27 @@ class RegistroDuplicadoController extends Controller
             $registro->regFecha =  new DateTime();
             $registro->dniFechaEmision = (clone $registro->regFecha)->modify('+15 days');
             $registro->dniFechaCaducidad = (clone $registro->dniFechaEmision)->modify('+7 years');
-    
-            
+
             $registro->regEstado = 1;  // 1=registrado
-            if($registro->save()){
+            if ($registro->save()) {
                 $solicitud->solEstado = "Aceptado";
                 $solicitud->save();
                 DB::commit();
                 return redirect()->route('reg-duplicado.index')->with('notifica', 'La actualizacion fue exitosa');
-            }else{
-                DB::rollBack(); 
-                $result='No se pudo Actualizar el registro';
-                return view('RegistroDNI.regDuplicado.edit', compact('persona', 'solicitud', 'registro'))->with('notifica',$result);
+            } else {
+                DB::rollBack();
+                $result = 'No se pudo Actualizar el registro';
+                return view('RegistroDNI.regDuplicado.edit', compact('persona', 'solicitud', 'registro'))->with('notifica', $result);
             }
-  
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Horror: " . $e->getMessage());
         }
-
     }
 
     public function cancelar()
     {
         return redirect()->route('reg-duplicado.index');
     }
-
-    // public function generaPdf($idRegistro)
-    // {
-    //     $registro = RegistroDNI::find($idRegistro);
-
-    //     $primer_apellido = $registro->Persona->Apellido_Paterno;
-    //     $nombres = $registro->Persona->Nombres;
-    //     $pos_2do = strpos($nombres, " ");
-    //     $primer_nombre = substr($nombres, 0, $pos_2do - 1);
-    //     $segundo_nombre = substr($nombres, $pos_2do);
-    //     $linea_detalle = $primer_apellido . "<<" . $primer_nombre . "<" . $segundo_nombre;
-
-    //     for ($i = 1; $i <= 30; $i++) {
-    //         if (strlen($linea_detalle) < $i) {
-    //             $linea_detalle = $linea_detalle . "<";
-    //         }
-    //     }
-    //     $fecha = date('Y-m-d');
-    //     $data = compact('registro', 'fecha', 'linea_detalle');
-    //     $pdf = Pdf::loadView('RegistroDNI.regPrimera.dniPdf', $data);
-
-    //     //return view('SolicitudDNI/dniPdf',compact('solicitud'));
-    //     return $pdf->stream('dni.pdf');
-    // }
-
-
-    // public function cancelar()
-    // {
-    //     return redirect()->route('reg-primera.index');
-    // }
-
 
     
     public function conexionSunat(){
