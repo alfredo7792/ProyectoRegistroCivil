@@ -76,6 +76,7 @@
                   @else
                     @if ($solicitud[0]->solEstado=="Entregado")
                     <div class="row  m-auto text-center"  style="color: #004370">
+                     
                       <h5  style="font-size:19px">Estado de Tramite</h5>
                       <h1 style="font-size:70px">100%</h1>
                     </div>
@@ -108,35 +109,6 @@
           </div>
         </div>
       </div>
-      {{-- <div class="vr"></div> --}}
-      {{-- <div class="col col-4 m-auto" style="color: #004370">
-        <h5  style="font-size:19px">Estado de Tramite</h5>
-        @if ($solicitud[0]->solEstado=="Pendiente")
-        <h1 style="font-size:70px">25%</h1>
-        <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
-            @else
-              @if ($solicitud[0]->solEstado=="En Proceso")
-              <h1 style="font-size:70px">50%</h1>
-              <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
-              @else
-                  @if ($solicitud[0]->solEstado=="Aceptado")
-                  <h1 style="font-size:70px">75%</h1>
-                  <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
-                  @else
-                    @if ($solicitud[0]->solEstado=="Entregado")
-                    <h1 style="font-size:70px">100%</h1>
-                    <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
-                    @else
-                    <h1 style="font-size:70px">100%</h1>
-                    <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
-                    @endif
-                      
-                  @endif
-              @endif
-                
-            @endif
-        
-      </div> --}}
       
     </div>
 </div>
