@@ -44,7 +44,7 @@
               <h1 style="font-size:90px">20%</h1>
             </div>
             <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 20%"></div>
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 20%; background-color:#f04d0d"></div>
             </div>
             <div class="row m-auto text-center" style="color: #004370">
               <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
@@ -57,7 +57,7 @@
                 <h1 style="font-size:90px">40%</h1>
               </div>
               <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar progress-bar-striped progress-bar-animated " style="width: 40%"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 40%"></div>
               </div>
               <div class="row m-auto text-center" style="color: #004370">
                 <h3 style="font-size:17px">{{$solicitud[0]->solEstado}}</h3>
