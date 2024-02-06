@@ -59,7 +59,7 @@
                         <br>
                         <a  class="dropdown-item" href="{{route('ConsultaHuella')}}"  style="text-decoration: none;">Mejores huellas</a>
                         <br>
-                        <a  class="dropdown-item" href="#"  style="text-decoration: none;">Estado de tramite DNI</a>
+                        <a  class="dropdown-item" href="{{route('ConsultaDNI')}}"  style="text-decoration: none;">Estado de tramite DNI</a>
                         <br>
                     </ul>
                 </li>

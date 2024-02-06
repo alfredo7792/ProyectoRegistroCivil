@@ -19,15 +19,13 @@
 
    
 
-  <form class="row g-3 m-2 align">
-    
+  <form class="row g-3 m-2 align" method="POST" action="{{route('GraficoDNI')}}">
+    @csrf
     <div class="col-auto">
       <label  class="form-label">Ingrese numero DNI</label>
-      
     </div>
     <div class="col-auto">
-     
-      <input type="text" class="form-control"  placeholder="DNI">
+      <input type="text" class="form-control" name="dni" placeholder="DNI">
     </div>
     <div class="col-auto">
       <label  class="form-label">Tipo de tramite</label>
@@ -36,7 +34,7 @@
    
     <div class="col-auto">
      
-      <select class="form-select" aria-label="Default select example">
+      <select class="form-select" name="tipo_dni">
 
         <option selected value="1">Primera Vez</option>
         <option value="2">Duplicado</option>
