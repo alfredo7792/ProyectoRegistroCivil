@@ -22,9 +22,9 @@
             <h3 id="titulo" class="card-title">LISTA DE SOLICITUDES POR DUPLICADO</h3>
         </div>
         <div class="card-body">
-            <a href="" class="btn btn-primary">
+            {{-- <a href="" class="btn btn-primary">
                 <i class="fas fa-plus"></i>Nueva Solicitud
-            </a>
+            </a> --}}
             <div id="mensaje">
                 @if (session('notifica'))
                     <div class="alert alert-warning alert-dismissible fade show mt-3 emergente" role="alert"
@@ -65,7 +65,7 @@
                                 <td>
                                     @if ($item->solEstado == 'Aceptado')
                                         <span class="badge font-size-10 bg-success"> {{ $item->solEstado }} </span>
-                                    @elseif ($item->solEstado == 'Pendiente')
+                                    @elseif ($item->solEstado == 'En Revision')
                                         <span class="badge font-size-10 bg-warning"> {{ $item->solEstado }} </span>
                                     @elseif ($item->solEstado == 'Rechazado')
                                         <span class="badge font-size-10 bg-danger"> {{ $item->solEstado }} </span>
@@ -75,9 +75,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('sol-duplicado.edit', $item->idSolicitud) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i> Editar</a>
-                                    <a href="#"
-                                        class="btn btn-danger btn-sm"><i class="fa "></i>Eliminar</a>
+                                        class="btn btn-primary btn-sm"><i class="fa "></i> Ver DNI</a>
                                 </td>
                             </tr>
                         @endforeach

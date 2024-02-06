@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\SolDniPrimeraVezCreateRequest;
 use App\Models\Persona;
 use App\Models\SolicitudDNI;
 use App\Models\RegistroDNI;
 use DateTime;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
-use Illuminate\Contracts\Routing\Registrar;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 
 class RegistroDuplicadoController extends Controller
@@ -55,7 +49,7 @@ class RegistroDuplicadoController extends Controller
 
             $registroExistente = RegistroDNI::select("*")
                 ->where('DNI', $solicitud->DNI_Titular)
-                ->where('regEstado', 'Aprobada')
+                ->where('regEstado', 'Aceptado')
                 ->where('dniEstado', 'Activa')
                 ->get();
             if ($registroExistente->count() == 0) {
@@ -79,7 +73,7 @@ class RegistroDuplicadoController extends Controller
 
             $registroExistente = RegistroDNI::select("*")
                 ->where('DNI', $solicitud->DNI_Titular)
-                ->where('regEstado', 'Aprobada')
+                ->where('regEstado', 'Aceptado')
                 ->where('dniEstado', 'Activa')
                 ->get();
 
@@ -92,11 +86,11 @@ class RegistroDuplicadoController extends Controller
                 $registro->regFecha = now();
                 $registro->dniFechaEmision = now()->addDays(5);
                 $registro->dniFechaCaducidad = now()->addYear(5);
-                $registro->regEstado = "Aprobada";
+                $registro->regEstado = "Aceptado";
                 $registro->dniEstado = "Activa";
                 $registro->idTipoDni = 2;   // 2=duplicado
                 if ($registro->save()) {
-                    $solicitud->solEstado = 'Aprobada';
+                    $solicitud->solEstado = 'Aceptado';
                     $solicitud->save();
                     $registroExistente->dniEstado = 'Inactiva';
                     $registroExistente->save();
@@ -121,7 +115,7 @@ class RegistroDuplicadoController extends Controller
         $persona = Persona::find($registro->DNI);
         $registroExistente = RegistroDNI::select("*")
             ->where('DNI', $solicitud->DNI_Titular)
-            ->where('regEstado', 'Aprobada')
+            ->where('regEstado', 'Aceptado')
             ->where('dniEstado', 'Activo')
             ->get();
         $msg="";
@@ -143,8 +137,8 @@ class RegistroDuplicadoController extends Controller
             $registro->regFecha =  new DateTime();
             $registro->dniFechaEmision = (clone $registro->regFecha)->modify('+15 days');
             $registro->dniFechaCaducidad = (clone $registro->dniFechaEmision)->modify('+7 years');
-
-            $registro->regEstado = 1;  // 1=registrado
+            $registro->regEstado = "Aceptado";
+            $registro->dniEstado = "Activo";
             if ($registro->save()) {
                 $solicitud->solEstado = "Aceptado";
                 $solicitud->save();

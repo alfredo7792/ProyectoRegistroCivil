@@ -99,15 +99,17 @@
                                 <td>{{ $item->Persona->Apellido_Paterno . ' ' . $item->Persona->Apellido_Materno }}</td>
                                 <td>{{ $item->regFecha }}</td>
                                 <td>
-                                    @if ($item->regEstado == 0)
-                                        <span class="badge font-size-10 bg-warning"> Pendiente </span>
-                                    @elseif ($item->regEstado == 1)
-                                        <span class="badge font-size-10 bg-success"> Registrado </span>
+                                    @if ($item->regEstado == 'Aceptado')
+                                        <span class="badge font-size-10 bg-success"> {{ $item->regEstado }} </span>
+                                    @elseif ($item->regEstado == 'Recibido')
+                                        <span class="badge font-size-10 bg-warning"> {{ $item->regEstado }} </span>
+                                    @elseif ($item->regEstado == 'Rechazado')
+                                        <span class="badge font-size-10 bg-danger"> {{ $item->regEstado }} </span>
                                     @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('reg-duplicado.edit', $item->idRegistro) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i> Editar</a>
+                                        class="btn btn-primary btn-sm"><i class="fa "></i> Revisar Solicitud</a>
                                     <a href="{{ route('reg-duplicado.dni', $item->idRegistro) }}"
                                         class="btn btn-primary btn-sm"><i class="fa "></i>Genera Dni</a>
                                 </td>

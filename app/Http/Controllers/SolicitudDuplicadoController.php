@@ -88,7 +88,7 @@ class SolicitudDuplicadoController extends Controller
             $solicitud->solMotivo = $request->motivo;
             $solicitud->monto_pago = $request->monto;
             $solicitud->codigo_voucher = $request->numero_op;
-            $solicitud->solEstado = 'Pendiente';
+            $solicitud->solEstado = 'Recibido';
 
             $solicitud->solFecha = new DateTime();
             $fechaNac = new DateTime($solicitud->persona->fecha_nacimiento);
