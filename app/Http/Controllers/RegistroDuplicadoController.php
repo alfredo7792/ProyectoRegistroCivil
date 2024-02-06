@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Persona;
 use App\Models\SolicitudDNI;
 use App\Models\RegistroDNI;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -129,27 +130,46 @@ class RegistroDuplicadoController extends Controller
     {
         DB::beginTransaction();
         try {
-            $registro = RegistroDNI::find($id);
+           
+            $registro = RegistroDNI::find($idRegistro);
             $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
-            $registro->DNI = $request->DNI;
-            $registro->idTipoDni = 1;  // 1= Primera vez
-            $registro->direccion = $request->direccion;
-            $registro->regFecha =  new DateTime();
-            $registro->dniFechaEmision = (clone $registro->regFecha)->modify('+15 days');
-            $registro->dniFechaCaducidad = (clone $registro->dniFechaEmision)->modify('+7 years');
-            $registro->regEstado = "Aceptado";
-            $registro->dniEstado = "Activo";
-            if ($registro->save()) {
-                $solicitud->solEstado = "Aceptado";
-                $solicitud->save();
-                DB::commit();
-                return redirect()->route('reg-duplicado.index')->with('notifica', 'La actualizacion fue exitosa');
-            } else {
-                DB::rollBack();
-                $result = 'No se pudo Actualizar el registro';
-                return view('RegistroDNI.regDuplicado.edit', compact('persona', 'solicitud', 'registro'))->with('notifica', $result);
+            $persona = Persona::find($registro->DNI);
+
+            $registroExistente = RegistroDNI::select("*")
+                ->where('DNI', $solicitud->DNI_Titular)
+                ->where('regEstado', 'Aceptado')
+                ->where('dniEstado', 'Activa')
+                ->get();
+
+            if ($registroExistente->count() == 1) {
+                $registro->idSolicitudDNI = $solicitud->idSolicitud;
+                $registro->DNI = $solicitud->DNI_Titular;
+                $registro->file_foto = $registroExistente->file_foto;
+                $registro->file_firma = $registroExistente->file_firma;
+                $registro->direccion = $request->direccion;
+                $registro->regFecha = now();
+                $registro->dniFechaEmision = now()->addDays(5);
+                $registro->dniFechaCaducidad = now()->addYear(5);
+                $registro->regEstado = "Aceptado";
+                $registro->dniEstado = "Activa";
+                $registro->idTipoDni = 2;   // 2=duplicado
+                if ($registro->save()) {
+                    $solicitud->solEstado = 'Aceptado';
+                    $solicitud->save();
+                    $registroExistente->dniEstado = 'Inactiva';
+                    $registroExistente->save();
+                    DB::commit();
+                    return redirect()->route('reg-duplicado.index')->with('notifica', 'La solicitud de DNI AZUL fue exitosa');
+                }
             }
+            else {
+                    DB::rollBack();
+                    $result = 'No se pudo Actualizar el registro';
+                    return view('RegistroDNI.regDuplicado.edit', compact('persona', 'solicitud', 'registro'))->with('notifica', $result);
+                }
+    
         } catch (Exception $e) {
+            DB::rollBack();
             throw new Exception("Horror: " . $e->getMessage());
         }
     }
@@ -157,6 +177,31 @@ class RegistroDuplicadoController extends Controller
     public function cancelar()
     {
         return redirect()->route('reg-duplicado.index');
+    }
+
+    
+    public function generaPdf($idRegistro)
+    {
+        $registro = RegistroDNI::find($idRegistro);
+
+        $primer_apellido = $registro->Persona->Apellido_Paterno;
+        $nombres = $registro->Persona->Nombres;
+        $pos_2do = strpos($nombres, " ");
+        $primer_nombre = substr($nombres, 0, $pos_2do - 1);
+        $segundo_nombre = substr($nombres, $pos_2do);
+        $linea_detalle = $primer_apellido . "<<" . $primer_nombre . "<" . $segundo_nombre;
+
+        for ($i = 1; $i <= 30; $i++) {
+            if (strlen($linea_detalle) < $i) {
+                $linea_detalle = $linea_detalle . "<";
+            }
+        }
+        $fecha = date('Y-m-d');
+        $data = compact('registro', 'fecha', 'linea_detalle');
+        $pdf = Pdf::loadView('RegistroDNI.regDuplicado.dniPdf', $data);
+
+        return view('SolicitudDNI/dniPdf',compact('solicitud'));
+        //return $pdf->stream('dni.pdf');
     }
 
     

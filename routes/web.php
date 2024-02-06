@@ -261,6 +261,9 @@ Route::get('sol-duplicado/{id}/generar', [SolicitudPrimeraController::class,'gen
 //SOLICITUD DNI - renovado
 Route::resource('sol-renovado', SolicitudRenovadoController::class);
 
+
+
+
 //Registro DNI - primera vez
 Route::get('reg-primera-create/{idSolicitud}', [RegistroPrimeraController::class,'createValido'])->name('reg-primera.createValido');
 Route::post('reg-primera-store/{id}', [RegistroPrimeraController::class,'storeValido'])->name('reg-primera.storeValido');
@@ -271,7 +274,6 @@ Route::get('reg-primera/{id}/generar', [RegistroPrimeraController::class,'genera
 Route::resource('reg-primera', RegistroPrimeraController::class);
 
 //Registro DNI - duplicado
-
 Route::get('reg-duplicado/{id}/generar', [RegistroDuplicadoController::class,'generaPdf'])->name('reg-duplicado.dni');
 Route::get('reg-duplicado/cancelar', [RegistroDuplicadoController::class,'cancelar'])->name('reg-duplicado.cancelar');
 Route::get('reg-duplicado/create/{idSolicitud}', [RegistroDuplicadoController::class,'createValido'])->name('reg-duplicado.createValido');

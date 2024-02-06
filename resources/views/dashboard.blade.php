@@ -99,13 +99,13 @@
                                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                                     aria-expanded="false">
                                     <div class="avatar-sm">
-                                        {{-- @if (is_null(Auth::user()->fotoPerfil))
+                                        @if (is_null(Auth::user()->fotoPerfil))
                                             <img src="{{ asset('/assets/img/profile.jpg') }}" alt="Foto de perfil"
                                                 class="avatar-img rounded-circle">
                                         @else
                                             <img src="{{ Auth::user()->fotoPerfil }}" alt="Foto de perfil"
                                                 class="avatar-img rounded-circle">
-                                        @endif --}}
+                                        @endif
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -113,7 +113,7 @@
                                         <li>
                                             <div class="user-box">
                                                 <div class="avatar-lg">
-                                                    {{-- @if (is_null(Auth::user()->fotoPerfil))
+                                                    @if (is_null(Auth::user()->fotoPerfil))
                                                         <img src="{{ asset('/assets/img/profile.jpg') }}"
                                                             alt="Foto de perfil" width="70px" height="250px"
                                                             class="avatar-img rounded-circle">
@@ -121,10 +121,10 @@
                                                         <img src="{{ Auth::user()->fotoPerfil }}" alt="Foto de perfil"
                                                             width="70px" height="250px"
                                                             class="avatar-img rounded-circle">
-                                                    @endif --}}
+                                                    @endif
                                                 </div>
                                                 <div class="u-text">
-                                                    {{-- <h2>{{ Auth::user()->name }}</h2>
+                                                    <h2>{{ Auth::user()->name }}</h2>
                                                     <p class="text-muted">{{ Auth::user()->email }}</p>
 
                                                     <form action="{{ route('usuario.update', Auth::user()->id) }}"
@@ -139,10 +139,10 @@
                                                             <button class="btn btn-warning p-2 mx-1">Guardar</button>
                                                         </div>
 
-                                                    </form> --}}
+                                                    </form>
 
-                                                    {{-- <a href="{{route('usuario.edit', Auth::user()->id)}}" class="btn btn-xs btn-secondary btn-sm">Editar Foto</a>
-                                                         --}}
+                                                    <a href="{{route('usuario.edit', Auth::user()->id)}}" class="btn btn-xs btn-secondary btn-sm">Editar Foto</a>
+                                                        
                                                 </div>
                                             </div>
                                         </li>
@@ -175,28 +175,28 @@
                     <div class="sidebar-content">
                         <div class="user">
                             <div class="avatar-sm float-left mr-2" style="margin-top:15%">
-                                {{-- @if (is_null(Auth::user()->fotoPerfil))
+                                @if (is_null(Auth::user()->fotoPerfil))
                                     <img src="{{ asset('/assets/img/profile.jpg') }}" alt="Foto de perfil"
                                         width="70px" height="250px" class="avatar-img rounded-circle">
                                 @else
                                     <img src="{{ Auth::user()->fotoPerfil }}" alt="Foto de perfil" width="70px"
                                         height="250px" class="avatar-img rounded-circle">
-                                @endif --}}
+                                @endif
                             </div>
                             <div class="info">
                                 <a href="{{ route('dashboard') }}" class="nav-link">
-                                    {{-- <span>
+                                    <span>
                                         <span>Nombre:</span>
                                         <span><b style="color: white">{{ Auth::user()->name }}</b></span>
                                         <span>Cargo:</span>
                                         <span class="user-level"
                                             style="color: white">{{ Auth::user()->rol->nombreRol }}</span>
-                                    </span> --}}
+                                    </span>
                                 </a>
                             </div>
                         </div>
                         <ul class="nav nav-primary">
-                            {{-- @if (Auth::user()->idRol == 4)
+                            @if (Auth::user()->idRol == 4)
                                 <li class="nav-item">
                                     <a href="{{ route('indexU') }}">
                                         <i class="fa-solid fa-users-gear"></i>
@@ -211,9 +211,9 @@
                                         <p>Ficha de Registro</p>
                                     </a>
                                 </li>
-                            @endif --}}
+                            @endif
 
-                            {{-- @if (Auth::user()->idRol == 2) --}}
+                            @if (Auth::user()->idRol == 2)
                                 <li class="nav-item">
                                     <a data-toggle="collapse" href="#base">
                                         <i class="far fa-file-alt"></i>
@@ -241,7 +241,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                            {{-- @endif --}}
+                            @endif
 
 
                             <li class="nav-item">
@@ -251,7 +251,7 @@
                                 </a>
                             </li>
 
-                            {{-- @if (Auth::user()->idRol == 2) --}}
+                            @if (Auth::user()->idRol == 2)
                                 <li class="nav-item">
                                     <a data-toggle="collapse" href="#solicitudDNI">
                                         <i class="far fa-file-alt"></i>
@@ -278,9 +278,9 @@
                                         </ul>
                                     </div>
                                 </li>
-                            {{-- @endif --}}
+                            @endif
 
-                            {{-- @if (Auth::user()->idRol == 2) --}}
+                            @if (Auth::user()->idRol == 2)
                                 <li class="nav-item">
                                     <a data-toggle="collapse" href="#registroDNI">
                                         <i class="far fa-file-alt"></i>
@@ -308,19 +308,19 @@
                                         </ul>
                                     </div>
                                 </li>
-                            {{-- @endif
+                            @endif
 
-                            @if (Auth::user()->idRol == 4) --}}
+                            @if (Auth::user()->idRol == 4)
                                 <li class="nav-item">
                                     <a href="{{ route('administrador.index') }}">
                                         <i class="fas fa-user-edit"></i>
                                         <p>Usuarios</p>
                                     </a>
                                 </li>
-                            {{-- @endif  --}}
+                            @endif 
 
 
-                            {{--
+                            
                             @if (Auth::user()->idRol == 6)
                                 <li class="nav-item">
                                     <a href="{{ route('Cargo.index') }}">
@@ -428,7 +428,7 @@
                                     </a>
                                 </li>
                             @endif
-                             Fin Segundo sprint de gestion personal 
+                             {{-- Fin Segundo sprint de gestion personal  --}}
                             @if (Auth::user()->idRol == 5)
                                 <li class="nav-item">
                                     <a href="{{ route('HoraExtra.index') }}">
@@ -445,7 +445,7 @@
                                         <p>Reportes</p>
                                     </a> 
                                 </li>
-                            @endif --}}
+                            @endif
                         </ul>
                     </div>
                 </div>

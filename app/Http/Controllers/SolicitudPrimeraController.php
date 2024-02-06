@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\DB;
 class SolicitudPrimeraController extends Controller
 {
     const PAGINATION = 10;
-    /* public function inicio(Request $request){
-        return view('ciudadano.index');
-    }*/
-
     public function index(Request $request)
     {
         $buscarpor = $request->get('buscarpor');
@@ -43,11 +39,10 @@ class SolicitudPrimeraController extends Controller
             $persona = Persona::find($request->DNI);
             $solicitud = new SolicitudDNI();
             $solicitud->DNI_Titular = $persona->DNI;
-            $solicitud->idTipoSolicitud = '1'; // 1= primera vez
             $solicitud->codigo_recibo = $request->codigo_recibo;
-            $solicitud->codigo_voucher = $request->codigo_voucher;
-            $solicitud->nombre_solicitante = $persona->Nombres . " " . $persona->Apellido_Paterno;
-
+            $solicitud->solMotivo = $request->motivo;
+            $solicitud->idTipoSolicitud = '1'; // 1= primera vez
+            
             if ($request->has('valida_foto')) {
                 $solicitud->valida_foto = 1;
             } else {
@@ -58,8 +53,14 @@ class SolicitudPrimeraController extends Controller
             } else {
                 $solicitud->valida_firma = 0;
             }
-            $solicitud->solMotivo = $request->motivo;
-            $solicitud->solEstado = 'Pendiente';
+
+            $solicitud->numero_solicitante = $request->telefono;
+            $solicitud->correo_solicitante = $request->correo;
+
+            $solicitud->codigo_voucher = $request->numero_op;
+            $solicitud->monto_pago = $request->monto;
+
+            $solicitud->solEstado = 'Recibido';
             $solicitud->solFecha = new DateTime();
 
             $fechaNac = new DateTime($solicitud->persona->fecha_nacimiento);
@@ -86,7 +87,7 @@ class SolicitudPrimeraController extends Controller
         DB::beginTransaction();
         try {
             $solicitud = SolicitudDNI::find($id);
-            if ($solicitud->solEstado == 'Pendiente') {
+            if ($solicitud->solEstado == 'Recibido') {
                 DB::commit();
                 return  view('SolicitudDNI.solPrimera.edit', compact('solicitud'));
             } else {
@@ -111,8 +112,7 @@ class SolicitudPrimeraController extends Controller
             $solicitud->idTipoSolicitud = '1'; // 1= primera vez
             $solicitud->codigo_recibo = $request->codigo_recibo;
             $solicitud->codigo_voucher = $request->codigo_voucher;
-            $solicitud->nombre_solicitante = $persona->Nombres . " " . $persona->Apellido_Paterno;
-    
+
             if ($request->has('valida_foto')) {
                 $solicitud->valida_foto = 1;
             } else {
@@ -124,7 +124,7 @@ class SolicitudPrimeraController extends Controller
                 $solicitud->valida_firma = 0;
             }
             $solicitud->solMotivo = $request->motivo;
-            $solicitud->solEstado = 'Pendiente';
+            $solicitud->solEstado = 'Recibido';
     
             $fechaNac = new DateTime($solicitud->persona->fecha_nacimiento);
             $intervalo = date_diff(new DateTime(), $fechaNac);

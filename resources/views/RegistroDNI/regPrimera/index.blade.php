@@ -16,6 +16,7 @@
         </form>
     </div>
 @endsection
+
 @section('Notificacion')
     @if (Auth::user()->idRol == 2)
         <li class="nav-item dropdown hidden-caret">
@@ -99,9 +100,9 @@
                                 <td>{{ $item->Persona->Apellido_Paterno . ' ' . $item->Persona->Apellido_Materno }}</td>
                                 <td>{{ $item->regFecha }}</td>
                                 <td>
-                                    @if ($item->regEstado == 0)
+                                    @if ($item->regEstado == "Recibido")
                                         <span class="badge font-size-10 bg-warning"> Pendiente </span>
-                                    @elseif ($item->regEstado == 1)
+                                    @elseif ($item->regEstado == "Aceptado")
                                         <span class="badge font-size-10 bg-success"> Registrado </span>
                                     @endif
                                 </td>

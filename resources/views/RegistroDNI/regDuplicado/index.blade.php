@@ -111,7 +111,7 @@
                                     <a href="{{ route('reg-duplicado.edit', $item->idRegistro) }}"
                                         class="btn btn-primary btn-sm"><i class="fa "></i> Revisar Solicitud</a>
                                     <a href="{{ route('reg-duplicado.dni', $item->idRegistro) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i>Genera Dni</a>
+                                        class="btn btn-danger btn-sm"><i class="fa "></i>Genera Dni</a>
                                 </td>
                             </tr>
                         @endforeach

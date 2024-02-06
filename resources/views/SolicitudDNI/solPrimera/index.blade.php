@@ -39,6 +39,9 @@
                         <th scope="col">Codigo</th>
                         <th scope="col">Solicitante</th>
                         <th scope="col">DNI</th>
+                        <th scope="col">Contacto</th>
+                        <th scope="col">Motivo</th>
+                        <th scope="col">N° Voucher</th>
                         <th scope="col">Fecha Recepcion</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Opciones</th>
@@ -53,9 +56,11 @@
                         @foreach ($solicitudes as $item)
                             <tr>
                                 <td>{{ $item->idSolicitud }}</td>
-                  
                                 <td>{{ $item->Persona->Nombres }}</td>
                                 <td>{{ $item->DNI_Titular }}</td>
+                                <td>{{ $item->numero_solicitante }}</td>
+                                <td>{{ $item->solMotivo }}</td>
+                                <td>{{ $item->codigo_voucher}}</td>
                                 <td>{{ $item->solFecha }}</td>
                                 <td>
                                     @if ($item->solEstado == 'Aceptado')
@@ -72,7 +77,7 @@
                                     <a href="{{ route('sol-primera.edit', $item->idSolicitud) }}"
                                         class="btn btn-primary btn-sm"><i class="fa "></i> Editar</a>
                                     <a href="{{ route('sol-primera.dni', $item->idSolicitud) }}"
-                                        class="btn btn-danger btn-sm"><i class="fa "></i>Eliminar</a>
+                                        class="btn btn-danger btn-sm"><i class="fa "></i>ver Dni</a>
 
                                 </td>
                             </tr>
