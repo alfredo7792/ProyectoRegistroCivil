@@ -21,6 +21,8 @@ class SolicitudDuplicadoController extends Controller
         
         $buscarpor = $request->get('buscarpor');
         $solicitudes = SolicitudDNI::select('*')
+            ->join('tipo_solicitud_dni as ts', 'ts.idTipoSolicitud', '=', 'solicitud_dni.idTipoSolicitud')
+            ->where('ts.idTipoSolicitud', 2)  // 1=Duplicado
             ->where('numero_solicitante', 'like', '%' . $buscarpor . '%')
             ->paginate($this::PAGINATION);
 
@@ -74,7 +76,7 @@ class SolicitudDuplicadoController extends Controller
         return view('SolicitudDNI.solDuplicado.create', compact('persona'));
     }
 
-    public function store($dni,Request $request)
+    public function store(Request $request,$dni)
     {
         DB::beginTransaction();
         try {
@@ -103,7 +105,7 @@ class SolicitudDuplicadoController extends Controller
             } else {
                 DB::rollback();
                 $mensaje= 'Error: El Ciudadano no es mayor de edad';
-                return  view('SolicitudDNI.solDuplicado.create', compact('solicitud', 'edad', 'persona'))->with('notifica', $mensaje);;
+                return  view('SolicitudDNI.solDuplicado.create', compact('solicitud', 'edad', 'persona'))->with('notifica', $mensaje);
             }
         } catch (\Exception $e) {
             DB::rollback();

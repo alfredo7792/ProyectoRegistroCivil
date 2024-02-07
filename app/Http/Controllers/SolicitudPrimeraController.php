@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\SolDniPrimeraVezCreateRequest;
 use App\Models\Persona;
+use App\Models\RegistroDNI;
 use App\Models\SolicitudDNI;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,8 +22,10 @@ class SolicitudPrimeraController extends Controller
     {
         $buscarpor = $request->get('buscarpor');
         $solicitudes = SolicitudDNI::select('*')
-            ->where('numero_solicitante', 'like', '%' . $buscarpor . '%')
-            ->paginate($this::PAGINATION);
+        ->join('tipo_solicitud_dni as ts', 'ts.idTipoSolicitud', '=', 'solicitud_dni.idTipoSolicitud')
+        ->where('ts.idTipoSolicitud', 1)  // 1=Primera vez
+        ->where('numero_solicitante', 'like', '%' . $buscarpor . '%')
+        ->paginate($this::PAGINATION);
 
         return view('SolicitudDNI.solPrimera.index', compact('solicitudes', 'buscarpor'));
     }
@@ -198,6 +201,9 @@ class SolicitudPrimeraController extends Controller
     public function generaPdf($idSolicitud)
     {
         $solicitud = SolicitudDNI::find($idSolicitud);
+        $registro = RegistroDNI::select('*')
+        ->where('idSolicitudDNI',$solicitud->idSolicitud)
+        ->first();
         $primer_apellido = $solicitud->Persona->Apellido_Paterno;
         $nombres = $solicitud->Persona->Nombres;
         $pos_2do = strpos($nombres, " ");
@@ -211,7 +217,7 @@ class SolicitudPrimeraController extends Controller
             }
         }
         $fecha = date('Y-m-d');
-        $data = compact('solicitud', 'fecha', 'linea_detalle');
+        $data = compact('solicitud', 'registro','fecha', 'linea_detalle');
         $pdf = Pdf::loadView('SolicitudDNI.solPrimera.dniPdf', $data);
 
         //return view('SolicitudDNI/dniPdf',compact('solicitud'));

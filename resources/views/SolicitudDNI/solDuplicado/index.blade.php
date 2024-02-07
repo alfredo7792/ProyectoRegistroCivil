@@ -74,8 +74,14 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if ($item->solEstado == 'Recibido')
                                     <a href="{{ route('sol-duplicado.edit', $item->idSolicitud) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i> Ver DNI</a>
+                                        class="btn btn-primary btn-sm"><i class="fa "></i> Editar</a>
+                                    @endif
+                                    @if ($item->solEstado == 'Aceptado')
+                                    <a href="{{ route('sol-duplicado.dni', $item->idSolicitud) }}"
+                                        class="btn btn-danger btn-sm"><i class="fa "></i>ver Dni</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

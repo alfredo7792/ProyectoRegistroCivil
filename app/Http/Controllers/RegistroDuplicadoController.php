@@ -109,9 +109,9 @@ class RegistroDuplicadoController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($idRegistro)
     {
-        $registro = RegistroDNI::find($id);
+        $registro = RegistroDNI::find($idRegistro);
         $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
         $persona = Persona::find($registro->DNI);
         $registroExistente = RegistroDNI::select("*")
@@ -119,19 +119,21 @@ class RegistroDuplicadoController extends Controller
             ->where('regEstado', 'Aceptado')
             ->where('dniEstado', 'Activo')
             ->get();
-        $msg="";
         if ($registroExistente->count()> 0) {
             $msg = "El ciudadano nunca se registro para DNI Azul";
+            return view('RegistroDNI.regDuplicado.edit', compact('registro', 'persona', 'solicitud'))->with('notifica', $msg);
+        }else{
+            return view('RegistroDNI.regDuplicado.edit', compact('registro', 'persona', 'solicitud'));
         }
-        return view('RegistroDNI.regDuplicado.edit', compact('registro', 'persona', 'solicitud'))->with('notifica', $msg);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $idRegistro)
     {
         DB::beginTransaction();
         try {
            
             $registro = RegistroDNI::find($idRegistro);
+            dd($registro->count());
             $solicitud = SolicitudDNI::find($registro->idSolicitudDNI);
             $persona = Persona::find($registro->DNI);
 
@@ -142,6 +144,7 @@ class RegistroDuplicadoController extends Controller
                 ->get();
 
             if ($registroExistente->count() == 1) {
+                //dd($registroExistente->count());
                 $registro->idSolicitudDNI = $solicitud->idSolicitud;
                 $registro->DNI = $solicitud->DNI_Titular;
                 $registro->file_foto = $registroExistente->file_foto;
@@ -163,6 +166,7 @@ class RegistroDuplicadoController extends Controller
                 }
             }
             else {
+                   // dd($registroExistente->count());
                     DB::rollBack();
                     $result = 'No se pudo Actualizar el registro';
                     return view('RegistroDNI.regDuplicado.edit', compact('persona', 'solicitud', 'registro'))->with('notifica', $result);
@@ -174,12 +178,6 @@ class RegistroDuplicadoController extends Controller
         }
     }
 
-    public function cancelar()
-    {
-        return redirect()->route('reg-duplicado.index');
-    }
-
-    
     public function generaPdf($idRegistro)
     {
         $registro = RegistroDNI::find($idRegistro);
@@ -204,6 +202,12 @@ class RegistroDuplicadoController extends Controller
         //return $pdf->stream('dni.pdf');
     }
 
+    public function cancelar()
+    {
+        return redirect()->route('reg-duplicado.index');
+    }
+
+    
     
     public function conexionSunat(){
         // $data = [

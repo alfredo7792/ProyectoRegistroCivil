@@ -100,17 +100,23 @@
                                 <td>{{ $item->Persona->Apellido_Paterno . ' ' . $item->Persona->Apellido_Materno }}</td>
                                 <td>{{ $item->regFecha }}</td>
                                 <td>
-                                    @if ($item->regEstado == "Recibido")
+                                    @if ($item->regEstado == 'Recibido')
                                         <span class="badge font-size-10 bg-warning"> Pendiente </span>
-                                    @elseif ($item->regEstado == "Aceptado")
+                                    @elseif ($item->regEstado == 'Aceptado')
                                         <span class="badge font-size-10 bg-success"> Registrado </span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('reg-primera.edit', $item->idRegistro) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i> Editar</a>
-                                    <a href="{{ route('reg-primera.dni', $item->idRegistro) }}"
-                                        class="btn btn-primary btn-sm"><i class="fa "></i>Genera Dni</a>
+                                    @if ($item->regEstado == 'Recibido')
+                                        <a href="{{ route('reg-primera.edit', $item->idRegistro) }}"
+                                            class="btn btn-primary btn-sm"><i class="fa "></i>Revisar</a>
+                                    @endif
+                                    @if ($item->regEstado == 'Aceptado')
+                                        <a href="{{ route('reg-primera.edit', $item->idRegistro) }}"
+                                            class="btn btn-primary btn-sm"><i class="fa "></i>Modificar</a>
+                                        <a href="{{ route('reg-primera.dni', $item->idRegistro) }}"
+                                            class="btn btn-danger btn-sm"><i class="fa "></i>Genera Dni</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

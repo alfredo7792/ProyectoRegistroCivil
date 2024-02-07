@@ -94,7 +94,7 @@
                     
                     <div class="d-flex flex-row justify-content-around">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Aceptar</button>
-                        <a href="{{ route('reg-duplicado.cancelar',$solicitud->idSolicitud) }}" class="btn btn-danger"><i
+                        <a href="{{ route('reg-duplicado.cancelar') }}" class="btn btn-danger"><i
                                 class="fas fa-ban"></i>Cancelar</a>
                     </div>
                 </form>

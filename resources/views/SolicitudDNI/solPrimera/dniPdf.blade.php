@@ -117,7 +117,7 @@
     <div class="container">
         <div class="anverso">
             {{-- <img src="images/SolicitudDNI/dni-anverso.png" alt=""> --}}
-            <img class="foto" src="{{ public_path($solicitud->file_foto) }}" alt="" width="98px" height="135px">
+            <img class="foto" src="{{ public_path($registro->file_foto) }}" alt="" width="98px" height="135px">
             <p class="anv_Apellido_Paterno">{{$solicitud->Persona->Apellido_Paterno}}</p>
             <p class="anv_Apellido_Paterno_foto">{{$solicitud->Persona->Apellido_Paterno}}</p>
             <p class="anv_Apellido_Materno">{{$solicitud->Persona->Apellido_Materno}}</p>
